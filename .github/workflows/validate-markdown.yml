@@ -23,10 +23,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyyaml
 
-      - name: Create test convention
-        run: |
-          cp -r conventions/template conventions/test-con
-
       - name: Run Validation Script
         run: |
           python validate_slots.py
@@ -37,8 +33,8 @@ jobs:
           1
           EOF
 
-          # Check if output was generated (filename varies based on template values)
-          if ls output/test-con-accessibility-plan-*.md 1> /dev/null 2>&1; then
+          # Check if output was generated using the sample convention
+          if ls output/sample-con-accessibility-plan-*.md 1> /dev/null 2>&1; then
             echo "✅ Assembler test passed."
           else
             echo "❌ Assembler test failed: No output generated."
