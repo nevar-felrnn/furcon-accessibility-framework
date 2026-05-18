@@ -81,6 +81,8 @@ def render_to_html(md_path):
     with open(md_path, "r", encoding="utf-8") as f:
         md_content = f.read()
 
+    render_time = datetime.now().strftime("%B %d, %Y at %I:%M %p")
+
     cover = extract_cover_fields(md_content)
     body_md = strip_header_block(md_content)
     body_md = fix_list_spacing(body_md)
@@ -88,6 +90,16 @@ def render_to_html(md_path):
     # Convert Markdown to HTML
     # Extensions: 'tables' for budget tables, 'fenced_code' for code blocks
     html_body = markdown.markdown(body_md, extensions=['tables', 'fenced_code', 'toc'])
+
+    # Tag h2 elements that start a new chapter or appendix so CSS can
+    # target them for page breaks without breaking every section heading.
+    # The toc extension adds id attributes, so we match <h2 ...> not just <h2>.
+    import re
+    html_body = re.sub(
+        r'<h2([^>]*)>((Chapter|Appendix)\b[^<]*)</h2>',
+        r'<h2\1 class="chapter-break">\2</h2>',
+        html_body
+    )
 
     cover_title = cover.get("cover_title", "Accessibility Plan")
     cover_html = f"""
@@ -99,7 +111,7 @@ def render_to_html(md_path):
                 <div><strong>Venue</strong> {cover.get('venue', '')}</div>
                 <div><strong>Director</strong> {cover.get('accessibility_director', '')}</div>
             </div>
-            <div class="cover-generated">Generated {cover.get('generated', '')}</div>
+            <div class="cover-generated">Rendered {render_time}</div>
         </div>
     """
 
@@ -126,8 +138,8 @@ def render_to_html(md_path):
             /* ── Base ───────────────────────────────────────────────── */
             body {{
                 font-family: Georgia, "Times New Roman", serif;
-                font-size: 11pt;
-                line-height: 1.65;
+                font-size: 10.5pt;
+                line-height: 1.55;
                 color: #1a1a1a;
                 max-width: 780px;
                 margin: 0 auto;
@@ -146,38 +158,38 @@ def render_to_html(md_path):
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
                 color: #1a2e44;
                 line-height: 1.25;
-                margin-top: 2em;
-                margin-bottom: 0.5em;
+                margin-top: 1.5em;
+                margin-bottom: 0.4em;
             }}
             h1 {{
-                font-size: 22pt;
+                font-size: 20pt;
                 border-bottom: 2px solid #1a2e44;
                 padding-bottom: 0.3em;
             }}
             h2 {{
-                font-size: 15pt;
+                font-size: 14pt;
                 border-bottom: 1px solid #cdd8e3;
-                padding-bottom: 0.2em;
-                margin-top: 2.5em;
+                padding-bottom: 0.15em;
+                margin-top: 2em;
             }}
             h3 {{
-                font-size: 12pt;
+                font-size: 11.5pt;
                 color: #2c4a6e;
             }}
             h4 {{
-                font-size: 11pt;
+                font-size: 10.5pt;
                 color: #4a6080;
                 font-style: italic;
             }}
 
             /* ── Body text ──────────────────────────────────────────── */
-            p {{ margin: 0 0 0.85em 0; }}
+            p {{ margin: 0 0 0.65em 0; }}
             ul, ol {{
-                margin: 0.5em 0 1em 0;
-                padding-left: 1.6em;
+                margin: 0.3em 0 0.75em 0;
+                padding-left: 1.5em;
             }}
-            li {{ margin-bottom: 0.4em; }}
-            li > ul, li > ol {{ margin-top: 0.3em; }}
+            li {{ margin-bottom: 0.25em; }}
+            li > ul, li > ol {{ margin-top: 0.2em; }}
 
             /* ── Tables ─────────────────────────────────────────────── */
             table {{
@@ -278,14 +290,18 @@ def render_to_html(md_path):
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             }}
 
-            /* ── Print ──────────────────────────────────────────────── */
+            /* ── Print footer ───────────────────────────────────────── */
+            .print-footer {{
+                display: none;  /* hidden on screen */
+            }}
+
             @media print {{
                 body {{
                     background: white;
                     max-width: none;
                     margin: 0;
-                    padding: 0.6in 0.9in;
-                    font-size: 11pt;
+                    padding: 0.65in 0.85in 0.85in 0.85in;
+                    font-size: 10.5pt;
                     color: #000;
                 }}
                 .container {{
@@ -304,8 +320,8 @@ def render_to_html(md_path):
                     border-bottom-color: #000;
                 }}
 
-                /* Each chapter (h2) starts on a new page */
-                h2 {{
+                /* Only Chapter/Appendix headings get a page break */
+                h2.chapter-break {{
                     page-break-before: always;
                     margin-top: 0;
                     padding-top: 0;
@@ -323,6 +339,29 @@ def render_to_html(md_path):
                 }}
                 table, figure {{
                     page-break-inside: avoid;
+                }}
+
+                /* Running footer — appears from page 2 onward.
+                   Page 1 (cover) already shows the render time prominently. */
+                .print-footer {{
+                    display: block;
+                    position: fixed;
+                    bottom: 0.3in;
+                    left: 0.85in;
+                    right: 0.85in;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+                    font-size: 7.5pt;
+                    color: #888;
+                    border-top: 0.5pt solid #ccc;
+                    padding-top: 3pt;
+                    display: flex;
+                    justify-content: space-between;
+                }}
+                /* Push the footer off page 1 by offsetting it one page height down,
+                   then reset. Chrome's fixed+print renders it on every page from
+                   where it first appears in the flow. */
+                .cover ~ .print-footer {{
+                    margin-top: 0;
                 }}
 
                 /* Strip screen-only decoration */
@@ -343,8 +382,12 @@ def render_to_html(md_path):
             {cover_html}
             {html_body}
             <div class="footer">
-                <p>Generated on {datetime.now().strftime("%B %d, %Y")} | Furry Convention Accessibility Framework</p>
+                <p>Rendered {render_time} &nbsp;·&nbsp; Furry Convention Accessibility Framework</p>
             </div>
+        </div>
+        <div class="print-footer">
+            <span>{cover_title}</span>
+            <span>Rendered {render_time}</span>
         </div>
     </body>
     </html>
