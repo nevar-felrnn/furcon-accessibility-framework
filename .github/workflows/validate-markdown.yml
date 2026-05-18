@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
@@ -23,22 +23,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyyaml
 
+      - name: Create test convention
+        run: |
+          cp -r conventions/template conventions/test-con
+          echo "convention: {name: 'Test', year: '2026'}" > conventions/test-con/convention.yaml
+
       - name: Run Validation Script
         run: |
           python validate_slots.py
 
       - name: Run Assembler (Smoke Test)
         run: |
-          # Create a dummy convention for testing if one doesn't exist
-          if [ ! -d "conventions/test-con" ]; then
-            cp -r conventions/template conventions/test-con
-            # Add minimal YAML content to avoid errors
-            echo "convention: {name: 'Test', year: '2026'}" > conventions/test-con/convention.yaml
-          fi
           python assemble.py << EOF
           1
           EOF
-          
+
           # Check if output was generated
           if [ -f "output/test-con-accessibility-plan-2026.md" ]; then
             echo "✅ Assembler test passed."
