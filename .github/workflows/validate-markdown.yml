@@ -26,7 +26,6 @@ jobs:
       - name: Create test convention
         run: |
           cp -r conventions/template conventions/test-con
-          echo "convention: {name: 'Test', year: '2026'}" > conventions/test-con/convention.yaml
 
       - name: Run Validation Script
         run: |
@@ -38,8 +37,8 @@ jobs:
           1
           EOF
 
-          # Check if output was generated
-          if [ -f "output/test-con-accessibility-plan-2026.md" ]; then
+          # Check if output was generated (filename varies based on template values)
+          if ls output/test-con-accessibility-plan-*.md 1> /dev/null 2>&1; then
             echo "✅ Assembler test passed."
           else
             echo "❌ Assembler test failed: No output generated."

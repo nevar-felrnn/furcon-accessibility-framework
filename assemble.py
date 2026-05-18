@@ -291,7 +291,7 @@ def main():
     full_document += "\n\n" + appendix
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    con_name = config.get("convention", {}).get("name", selected).replace(" ", "-").lower()
+    con_name = (config.get("convention", {}).get("name") or selected).replace(" ", "-").lower()
     con_year = config.get("convention", {}).get("year", "")
     filename = f"{con_name}-accessibility-plan-{con_year}.md".strip("-")
     output_path = os.path.join(OUTPUT_DIR, filename)
