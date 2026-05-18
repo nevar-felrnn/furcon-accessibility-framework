@@ -1,0 +1,8 @@
+# CODEOWNERS
+#
+# These GitHub usernames are required to approve any pull request before it can be merged.
+# Add one username per line after the * — e.g. * @your-username @another-person
+#
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+* @placeholder-owner-1 @placeholder-owner-2

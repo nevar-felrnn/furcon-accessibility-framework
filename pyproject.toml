@@ -1,0 +1,9 @@
+[project]
+name = "furryaccessibility"
+version = "0.1.0"
+description = "A tool for assembling convention-specific accessibility planning documents from a shared framework and private convention configuration."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pyyaml",
+]
