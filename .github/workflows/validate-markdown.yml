@@ -26,7 +26,6 @@ jobs:
       - name: Create test convention
         run: |
           cp -r conventions/template conventions/test-con
-          echo "convention: {name: 'Test', year: '2026'}" > conventions/test-con/convention.yaml
 
       - name: Run Validation Script
         run: |
