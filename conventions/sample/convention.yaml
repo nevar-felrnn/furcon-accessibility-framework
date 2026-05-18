@@ -1,0 +1,116 @@
+# Sample Convention Configuration
+# ============================================================
+# This is a working example showing what a filled-in convention.yaml
+# looks like. All values here are generic placeholders — no real
+# convention data. Copy this folder and replace the values with your own.
+# ============================================================
+
+convention:
+  name: "Sample Con"
+  year: "2026"
+  dates: "August 1-3, 2026"
+  website: "https://samplecon.example.com"
+
+venue:
+  name: "Example Hotel & Convention Center"
+  address: "123 Convention Drive, Anytown, ST 00000"
+  accessibility_desk_location: "Main lobby, near registration"
+  quiet_room_location: "Room 204, second floor"
+  registration_location: "Ballroom A foyer"
+  notes: "Elevator access is on the east side of the building."
+
+contacts:
+  accessibility_director:
+    name: "Alex Director"
+    email: "accessibility@samplecon.example.com"
+    phone: "555-0100"
+  accessibility_assistant_director:
+    name: "Jordan Assistant"
+    email: "accessibility-assist@samplecon.example.com"
+    phone: "555-0101"
+  safety_lead:
+    name: "Sam Safety"
+    email: "safety@samplecon.example.com"
+    phone: "555-0102"
+  it_lead:
+    name: "Riley IT"
+    email: "it@samplecon.example.com"
+    phone: "555-0103"
+  registration_lead:
+    name: "Casey Registration"
+    email: "reg@samplecon.example.com"
+    phone: "555-0104"
+  convention_chair:
+    name: "Morgan Chair"
+    email: "chair@samplecon.example.com"
+    phone: "555-0105"
+
+desk_hours:
+  open: "10:00 AM"
+  close: "8:00 PM"
+  notes: "Hours extended to 10:00 PM on Saturday."
+
+interpreter_services:
+  asl_contracted: true
+  asl_vendor: "Example Interpreter Services LLC"
+  asl_cost: "$2,000"
+  asl_rooms_covered: "Main events room, Panel Room A"
+  cart_contracted: false
+  cart_vendor: ""
+  cart_cost: ""
+  notes: "Book interpreters at least 6 months in advance."
+
+equipment:
+  wheelchair_count: 2
+  transport_chair_count: 2
+  walker_count: 1
+  cane_count: 4
+  scooter_count: 0
+  ownership_model: "owned"
+  storage_location: "Storage closet B, near loading dock"
+  rental_vendor: ""
+  liability_waiver_required: true
+  liability_waiver_confirmed: true
+  notes: ""
+
+sensory_supplies:
+  fidget_toys: true
+  earmuffs_earplugs: true
+  tinted_lenses: false
+  weighted_lap_pads: false
+  notes: "Supplies kept at the accessibility desk."
+
+badge_emblem:
+  emblem_description: "Small blue star sticker applied to badge"
+  applied_by_registration: true
+  applied_by_accessibility: true
+  cost_owner: "shared"
+  notes: "Design must be submitted to registration 8 weeks before the convention."
+
+quiet_room:
+  location: "Room 204, second floor"
+  camera_monitored: false
+  it_contact_for_incidents: "555-0103"
+  hours: "Convention core hours only"
+  notes: "No food, no loud conversation. Dim lighting available via switch near the door."
+
+budget:
+  total_allocated: "$4,500"
+  interpreter_budget: "$2,000"
+  equipment_budget: "$500"
+  printed_materials_budget: "$200"
+  contingency_budget: "$1,500"
+  supplemental_recognition_budget: "$300"
+  notes: ""
+
+shared_resources:
+  partner_conventions: []
+  shared_equipment: false
+  primary_storage_convention: ""
+  transport_notes: ""
+
+post_con:
+  review_date: ""
+  lessons_learned_doc: ""
+  recommendations_submitted: false
+  notes: ""

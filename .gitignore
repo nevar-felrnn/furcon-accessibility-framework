@@ -4,10 +4,13 @@
 #
 # conventions/template/convention.yaml IS committed — it's
 # the public template, not a real convention's private data.
+# conventions/sample/convention.yaml IS committed — it's a
+# working example with generic placeholder values, no real data.
 # Everything else in conventions/ is ignored.
 conventions/**/*.yaml
 conventions/**/*.yml
 !conventions/template/convention.yaml
+!conventions/sample/convention.yaml
 conventions/*/notes/
 
 # ── Output files ──────────────────────────────────────────
